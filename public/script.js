@@ -76,6 +76,18 @@ var TodoForm = function(){
 				   			autoUpdate : true
 				   		}
 				   });
+    self.newItem = ko.observable()
+    				 .extend({
+    				 	model : Todo
+    				 })
+
+    self.remove = function(todo){
+    	self.todos.remove(todo);
+    }
+
+    self.create = function(){
+    	self.todos.push(self.newItem);
+    }
 
 	self.showMode = ko.observable('all');
     self.filteredTodos = ko.computed(function(){
@@ -99,18 +111,6 @@ var TodoForm = function(){
 		}).length;
 	});
 
-    self.newItem = ko.observable()
-    				 .extend({
-    				 	model : Todo
-    				 })
-
-    self.remove = function(todo){
-    	self.todos.remove(todo);
-    }
-
-    self.create = function(){
-    	self.todos.push(self.newItem);
-    }
 
 	self.activate = function(){
 		return self.todos.fetch();
