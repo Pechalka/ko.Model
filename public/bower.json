@@ -1,0 +1,20 @@
+{
+  "name": "public",
+  "version": "0.0.0",
+  "authors": [
+    "Andrew <luzkovskyandrey@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout.js": "~3.1.0",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.1.1"
+  }
+}
