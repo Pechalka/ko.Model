@@ -2,11 +2,11 @@ ko.Model
 ========
 
     var Todo = ko.Model({
-	url : '/api/todo',
-	fields : {
-		title : '',
-		isCompeted : false
-	}
+        url : '/api/todo',
+        fields : {
+            title : '',
+            isCompeted : false
+        }
     })
 
     var TodoList = function(){
