@@ -13,7 +13,7 @@
 
 
 <script type="text/html" id="list-field">
-<select data-bind="options : objectTypes, value : objectType"></select>
+<select data-bind="options : objectTypes, optionsText : 'title', value : objectType"></select>
 <table class="table">
       <thead>
         <tr>
@@ -39,7 +39,12 @@
         </tr>
       </tbody>
     </table>
-    <a data-bind="click : ">active</a>
+</script>
+
+<script type="text/html" id="tpod">
+  <div data-bind="with : model">
+    <h1 data-bind="text : title"></h1>
+  </div>
 </script>
 
 <script type="text/html" id="todo-list">
@@ -78,12 +83,29 @@
 </script>
 
 
+
+<script type="text/html" id="members-template">
+<div class="row">
+    <div>
+        <!-- ko with : selectedMember -->
+            <input data-bind="value : firsName" type="text" />
+            <input data-bind="value : lastName" type="text" />
+            <p data-bind="visible : showEmail">
+                email <input data-bind="value : email" type="text" />
+            </p>
+            <select data-bind="value : relationship, options : relationships"></select>
+        <!-- /ko -->
+        <a data-bind="click : add" href class="btn">add</a>
+    <div>
+    <div></div>
+</div>
+</script>
+
     </head>
     <body>
 	<div class="container" >
-        <ul style="margin-bottom: 20px;" class=" nav nav-pills">
-            <li><a data-bind="click : showTodo" href="#">Todo</a></li>
-            <li><a data-bind="click : showFields" href="#">Fields</a></li>
+        <ul data-bind="foreach : samples" style="margin-bottom: 20px;" class=" nav nav-pills">
+            <li><a data-bind="click : $parent.show, text : $data" href="#">Todo</a></li>
         </ul>
 
          <div data-bind="with : content" >
@@ -95,5 +117,10 @@
  		<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
  		<script type="text/javascript" src="bower_components/knockout.js/knockout.js"></script>
     <script type="text/javascript" src="ko.Model.js"></script>
- 		<script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="viewModels/FieldsList.js"></script>
+    <script type="text/javascript" src="viewModels/TodoForm.js"></script>
+    <script type="text/javascript" src="viewModels/memberadd.js"></script>
+    <script type="text/javascript" src="viewModels/TPod.js"></script>
+
+ 		<script type="text/javascript" src="app.js"></script>
 </html>
