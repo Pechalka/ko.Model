@@ -99,7 +99,10 @@
     <div>
     <div>
       <ul data-bind="foreach : members">
-        <li data-bind="text : firstName, click : $parent.edit"></li>
+        <li >
+         <a href data-bind="text : firstName, click : $parent.edit"></a>
+         <a href data-bind="click : $parent.remove">X</a>
+        </li>
       <ul>
     </div>
 </div>
