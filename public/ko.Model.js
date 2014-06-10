@@ -52,7 +52,7 @@ var REST = function(url){
 // }
 
 ko.Model = function(options){
-	var Class = function(data){
+	var Class = function(data, autoUpdate){
 		data = data || {};
 
 		var self = this;
@@ -76,12 +76,23 @@ ko.Model = function(options){
 			return ko.toJS(data);			
 		}
 
-		var update = ko.computed(function(){
-			var data = self.toJS()	
-			if (update && self.id)
-				new REST(self.url).update(self.id, data);
-		})
+		if (autoUpdate){
+			var update = ko.computed(function(){
+				var data = self.toJS()	
+				if (update && self.id)
+					new REST(self.url).update(self.id, data);
+			})
+		}
 
+		self.errors = ko.validation.group(self, { deep: true });
+	
+		self.isValid = function () {
+	        if (self.errors().length !== 0) {
+                self.errors.showAllMessages();
+                return false;
+            }
+            return true;
+        }
 	}
 
 
@@ -151,7 +162,7 @@ ko.extenders.model = function(target, options){
 		target.fetch = function(){
 			return api.getAll(params).done(function(json){
 				var models = ko.utils.arrayMap(json, function(d){
-					return new Type(d);
+					return new Type(d, autoUpdate);
 				})
 
 				target(models);
@@ -193,28 +204,41 @@ ko.extenders.model = function(target, options){
 			return !target() || !target().id;
 		})
 
-		target.fetch = function(){
-			if (!target.isNew())
-				return api.getOne(target().id, function(json){
-					var obj = makeModel(json, m.fields); 
-					target(obj);
-				})
-			else {
-				var d = $.Deferred();
+		target.fetch = function(id){
+			// if (!target.isNew())
+			// 	return api.getOne(target().id, function(json){
+			// 		var obj = makeModel(json, m.fields); 
+			// 		target(obj);
+			// 	})
+			// else {
+			// 	var d = $.Deferred();
 				
-				d.resolve(target());
+			// 	d.resolve(target());
 
-				return d.promise();
-			}
+			// 	return d.promise();
+			// }
+			return api.getOne(id).done(function(json){
+				target(new Type(json))
+			})
+		}
+
+		target.clean = function(){
+			target(new Type({}));
 		}
 		
 		// if (m.fields){
 		// 	var obj = makeModel(target(), m.fields); 
 		// 	target(obj);	
 		// }
-		target(new Type());
+		target(new Type({}));
 
 		target.save = function(){
+			if (!target().isValid()) {
+				return $.Deferred()
+				        .reject('validation')
+				        .promise();
+			};
+
 			if (target.isNew()){
 				var data = ko.toJS(target());
 				return api.create(data);			

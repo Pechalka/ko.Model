@@ -88,16 +88,20 @@
 <div class="row">
     <div>
         <!-- ko with : selectedMember -->
-            <input data-bind="value : firsName" type="text" />
+            <input data-bind="value : firstName" type="text" />
             <input data-bind="value : lastName" type="text" />
             <p data-bind="visible : showEmail">
                 email <input data-bind="value : email" type="text" />
             </p>
-            <select data-bind="value : relationship, options : relationships"></select>
+            <select data-bind="value : relationship, options : $parent.relationships"></select>
         <!-- /ko -->
-        <a data-bind="click : add" href class="btn">add</a>
+        <a data-bind="click : save" href class="btn">save</a>
     <div>
-    <div></div>
+    <div>
+      <ul data-bind="foreach : members">
+        <li data-bind="text : firstName, click : $parent.edit"></li>
+      <ul>
+    </div>
 </div>
 </script>
 
@@ -116,6 +120,7 @@
     </body>
  		<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
  		<script type="text/javascript" src="bower_components/knockout.js/knockout.js"></script>
+    <script type="text/javascript" src="bower_components/ko-validation/Dist/knockout.validation.min.js"></script>
     <script type="text/javascript" src="ko.Model.js"></script>
     <script type="text/javascript" src="viewModels/FieldsList.js"></script>
     <script type="text/javascript" src="viewModels/TodoForm.js"></script>

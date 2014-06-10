@@ -23,6 +23,16 @@ makeREST(app, '/api/types', [
 makeREST(app, '/api/fields');
 makeREST(app, '/api/todo');
 makeREST(app, '/api/check');
+makeREST(app, '/api/members', [
+	{ 
+		id : 1,
+		firstName : 'Jim',
+		lastName : 'Bin',
+		email : 'Jim@mail.com',
+		relationship : 'ManAccountHolder'
+	}
+]);
+
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

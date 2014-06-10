@@ -5,18 +5,30 @@ var Member = ko.Model({
 		firstName : '',
 		lastName : '',
 		email : '',
-		relationship : ''
+		relationship : 'Son'
 	},
-	initialize : function(self){
+	init : function(){
+        var self = this;
 		self.showEmail = ko.computed(function(){
 	        return self.relationship() != 'Son' && 
 	               self.relationship() != 'Daughter' ;
 		})
+        
+        self.firstName.extend({
+             required: true,
+             maxLength: 30
+        })
+        
+        self.lastName.extend({
+             required: true,
+             maxLength: 30
+        })
+
 		self.email.extend({
             email: {
                 message: 'please use valid email address'
                 , onlyIf : self.showEmail
-            },
+            }
         });
 
 	}
@@ -77,22 +89,23 @@ var Members = function() {
 
 
 	
-	self.selectedMember = ko.observable(m)
+	self.selectedMember = ko.observable()
 						    .extend({
 						    	model : Member
 						    });
 
-    self.add = function(){
-    //	self.selectedMember.save();
-
+    self.save = function(){
+    	self.selectedMember.save()
+                           .then(self.members.fetch)
+                           .then(self.selectedMember.clean);
     }
 
     self.edit = function(member){
-    //	self.selectedMember.fetch(member.id);
+    	self.selectedMember.fetch(member.id);
     }
 
 	self.activate = function(){
-
+        self.members.fetch();
 	}
 	self.template = 'members-template';
 }
