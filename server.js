@@ -22,7 +22,7 @@ makeREST(app, '/api/types', [
 
 makeREST(app, '/api/fields');
 makeREST(app, '/api/todo');
-makeREST(app, '/api/check');
+
 makeREST(app, '/api/members', [
 	{ 
 		id : 1,
@@ -33,6 +33,10 @@ makeREST(app, '/api/members', [
 	}
 ]);
 
+makeREST(app, '/api/check', [
+	{ id : 1, title : 'water', perMonth : 10, frequency : 'month'},
+	{ id : 2, title : 'internate', perMonth : 3, frequency : 'month'},	
+])
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

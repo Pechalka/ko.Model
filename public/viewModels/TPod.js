@@ -1,19 +1,7 @@
 
-var Model = function(options){
-	return function(data){
-		var self = this;
 
-		for(var key in options.fields){
-			var value = options.fields[key];
-			self[key] = ko.observable(data[key] || value);
-		}
-		
-		if (options.init)
-			options.init.apply(self, data)
-	}
-}
 
-var Check = Model({
+var Check = ko.Model({
 	url : '/api/check',
 	fields : {
 		category : 'Home',
@@ -22,8 +10,10 @@ var Check = Model({
 		perMonth : 20,
 		potCategory : 'Personal Pot'
 	},
-	init : function(data){
+	init : function(data, id){
 		console.log(this.category())
+		console.log(data);
+		console.log(id);
 	}
 })
 
@@ -31,7 +21,8 @@ var TPod = function() {
 	var self = this;
 
 	var c = new Check({
-	})
+		category : 'name'
+	}, 2)
 
 	self.model = ko.observable(c);
 

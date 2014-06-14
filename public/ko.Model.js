@@ -52,8 +52,14 @@ var REST = function(url){
 // }
 
 ko.Model = function(options){
+
 	var Class = function(data, autoUpdate){
 		data = data || {};
+
+		var arg = arguments;
+
+		data = arg[0] || {};
+
 
 		var self = this;
 		self.url = options.url;
@@ -64,8 +70,7 @@ ko.Model = function(options){
 			self[key] = ko.observable(data[key] || value);
 		}
 		
-		if (options.init)
-			options.init.apply(self, data);
+		//self.isValid = function(){ return true; }
 
 		self.toJS = options.toJS || function(){
 			var data = {};
@@ -75,17 +80,9 @@ ko.Model = function(options){
 
 			return ko.toJS(data);			
 		}
+		if (options.init)
+			options.init.apply(self, arg);
 
-		if (autoUpdate){
-			var update = ko.computed(function(){
-				var data = self.toJS()	
-				if (update && self.id)
-					new REST(self.url).update(self.id, data);
-			})
-		}
-
-		self.errors = ko.validation.group(self, { deep: true });
-	
 		self.isValid = function () {
 	        if (self.errors().length !== 0) {
                 self.errors.showAllMessages();
@@ -93,6 +90,22 @@ ko.Model = function(options){
             }
             return true;
         }
+
+		if (autoUpdate){
+			var update = ko.computed(function(){
+				var data = self.toJS()	
+				if (update && self.id && self.isValid())
+					new REST(self.url).update(self.id, data);
+			})
+		}
+
+		self.errors = ko.validation.group(self, { deep: true });
+	
+
+
+
+
+
 	}
 
 

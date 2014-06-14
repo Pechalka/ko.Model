@@ -79,7 +79,7 @@ var makeREST = function(app, url, default_items){
 		};
 		if (index != -1){
 			collection[index] = req.body;
-			collection[index].id = id;
+			collection[index].id = parseInt(id);
 		}
 
 		res.json('ok');

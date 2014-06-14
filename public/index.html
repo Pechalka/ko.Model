@@ -11,7 +11,34 @@
 }
 </style>
 
+<script type="text/html" id="check-list">
 
+<table class="table">
+      <thead>
+        <tr>
+          <th>title</th>
+          <th>frequency</th>
+          <th>value</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach : items">
+        <tr data-bind="css : { danger : !isValid()}" >
+          <td data-bind="text : title"></td>
+          <td>
+            <select data-bind="options : $parent.frequencyList, value :frequency"></select>
+          </td>
+          <td>
+            <input data-bind="value : value" type="text" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-bind="visible : hasError" class="alert alert-danger fade in">
+      <h4>Some item are incorect!</h4>
+      <p>please fix it.</p>
+    </div>
+    <p>Total: <!-- ko text : total --><!-- /ko --><p>
+</script>
 <script type="text/html" id="list-field">
 <select data-bind="options : objectTypes, optionsText : 'title', value : objectType"></select>
 <table class="table">
@@ -24,7 +51,7 @@
       </thead>
       <tbody>
         <!-- ko foreach : fields -->
-        <tr>
+        <tr >
           <td data-bind="text : title"></td>
           <td data-bind="text : type"></td>
           <td><a data-bind="click : $parent.removeField" href class="btn-xs btn btn-danger" >remove</a></td>
@@ -124,11 +151,13 @@
  		<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
  		<script type="text/javascript" src="bower_components/knockout.js/knockout.js"></script>
     <script type="text/javascript" src="bower_components/ko-validation/Dist/knockout.validation.min.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="ko.Model.js"></script>
     <script type="text/javascript" src="viewModels/FieldsList.js"></script>
     <script type="text/javascript" src="viewModels/TodoForm.js"></script>
     <script type="text/javascript" src="viewModels/memberadd.js"></script>
     <script type="text/javascript" src="viewModels/TPod.js"></script>
+    <script type="text/javascript" src="viewModels/CheckList.js"></script>
 
  		<script type="text/javascript" src="app.js"></script>
 </html>

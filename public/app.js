@@ -1,18 +1,9 @@
-
-var keys = function(d){
-	var result = [];
-	for(var key in d){
-		result.push(key)
-	}
-
-	return result;
-}
-
 var sample = {
 	'Todo' : TodoForm,
 	'Fields' : FieldsList,
 	'Members' : Members,
-	'TPod' : TPod
+	'TPod' : TPod,
+	'Checks' : CheckList
 }
 var app = {
 	samples : keys(sample), 
@@ -28,5 +19,5 @@ var app = {
 
 $(function(){
 	ko.applyBindings(app);
-	app.show('Todo');
+	app.show('Checks');
 });
