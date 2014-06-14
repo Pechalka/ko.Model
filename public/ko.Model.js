@@ -70,7 +70,6 @@ ko.Model = function(options){
 			self[key] = ko.observable(data[key] || value);
 		}
 		
-		//self.isValid = function(){ return true; }
 
 		self.toJS = options.toJS || function(){
 			var data = {};
@@ -80,10 +79,9 @@ ko.Model = function(options){
 
 			return ko.toJS(data);			
 		}
-		if (options.init)
-			options.init.apply(self, arg);
 
-		self.isValid = function () {
+		self.errors = ko.validation.group(self, { deep: true });
+		self.isValid =  function () {
 	        if (self.errors().length !== 0) {
                 self.errors.showAllMessages();
                 return false;
@@ -91,15 +89,19 @@ ko.Model = function(options){
             return true;
         }
 
+		if (options.init)
+			options.init.apply(self, arg);
+
+
 		if (autoUpdate){
 			var update = ko.computed(function(){
-				var data = self.toJS()	
+				var data = self.toJS();
 				if (update && self.id && self.isValid())
 					new REST(self.url).update(self.id, data);
 			})
 		}
 
-		self.errors = ko.validation.group(self, { deep: true });
+		
 	
 
 
@@ -107,6 +109,8 @@ ko.Model = function(options){
 
 
 	}
+
+	Class.prototype.url = options.url;
 
 
 	return Class;
@@ -118,9 +122,9 @@ ko.extenders.model = function(target, options){
 	var params = options.getParams;
 	if (options.type)
 		Type = options.type;
-
-	var o = new Type();
-	var api = new REST(o.url);
+	
+	var url = Type.prototype.url
+	var api = new REST(url);
 	var autoUpdate = !!options.autoUpdate;
 
 	var isObservableArray = ko.isObservable(target) && 'push' in target;

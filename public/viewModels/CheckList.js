@@ -18,12 +18,11 @@ var Check = ko.Model({
 		perMonth : 0
 	},
 	init : function(data){
-		if (!data) return;
-
 		var self = this;
 		self.value = ko.observable();
+
 		self.isValid = ko.computed(function () {
-            return !isNaN(self.value());
+			 return !isNaN(self.value());
         });
 
         self.perMonth = ko.computed({

@@ -34,7 +34,7 @@ makeREST(app, '/api/members', [
 ]);
 
 makeREST(app, '/api/check', [
-	{ id : 1, title : 'water', perMonth : 10, frequency : 'month'},
+//	{ id : 1, title : 'water', perMonth : 10, frequency : 'month'},
 	{ id : 2, title : 'internate', perMonth : 3, frequency : 'month'},	
 ])
 
